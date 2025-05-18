@@ -1,0 +1,32 @@
+name: Deploy Node.js App to Azure Web App
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          client-id: <APP_ID_FROM_MANAGED_IDENTITY>
+          tenant-id: <YOUR_TENANT_ID>
+          subscription-id: fd388456-4126-4108-9ce3-9ad118d27d85
+
+      - name: 'Deploy to Azure WebApp'
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: arun123webapp
+          slot-name: production
+          package: .
